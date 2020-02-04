@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import Character from './components/Character.vue'
 import Navbar from './components/Navbar'
 import Header from "./components/Header";
 
@@ -14,7 +13,6 @@ export default {
   name: 'app',
   components: {
     Header,
-    Character,
     Navbar
   },
   created() {
