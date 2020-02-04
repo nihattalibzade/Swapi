@@ -16,7 +16,7 @@ export default {
     Navbar
   },
   created() {
-    this.$store.dispatch('loadCharacter', 'https://swapi.co/api/people/1/')
+    this.$store.dispatch('loadCharacter', 'https://swapi.co/api/people/1/');
     this.$store.dispatch('loadCharacters');
     this.$store.dispatch('loadFilms');
     this.$store.dispatch('loadStarships');

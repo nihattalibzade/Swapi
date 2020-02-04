@@ -64,21 +64,12 @@ export const store = new Vuex.Store({
             axios.get(url)
                 .then(response => {
                     this.person.name = response.data.name;
-                    axios.get(response.data.homeworld)
-                        .then(response2 => {
-                            this.person.homeworld = response2.data.name;
-                        });
+                    this.person.homeworld = this.getResponse(response.data.homeworld).name;
                     response.data.films.forEach((film) => {
-                        axios.get(film)
-                            .then(response2 => {
-                                this.person.films.push(response2.data.title);
-                            })
+                        this.person.films.push(this.getResponse(film).title);
                     });
                     response.data.starships.forEach((ship) => {
-                        axios.get(ship)
-                            .then(response2 => {
-                                this.person.starships.push(response2.data.name);
-                            })
+                        this.person.starships.push(this.getResponse(ship).name);
                     });
                     commit('saveCharacter', this.person);
                 })
@@ -210,6 +201,13 @@ export const store = new Vuex.Store({
                     this.errors.push(e)
                 }).finally(() => setTimeout(function () { commit('loadingState', false); }.bind(this), 2000));
         },
+
+        getResponse: function (data) {
+            axios.get(data)
+                .then(response => {
+                    return response.data;
+                })
+        }
     },
     mutations: {
         saveCharacters(state, characters) {
