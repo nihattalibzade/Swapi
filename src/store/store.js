@@ -5,11 +5,6 @@ import * as consts from './consts'
 
 Vue.use(Vuex);
 
-const characterURL = 'https://swapi.co/api/people/';
-const filmsURL = 'https://swapi.co/api/films/';
-const starshipsURL = 'https://swapi.co/api/starships/';
-const planetsURL = 'https://swapi.co/api/planets/';
-
 export const store = new Vuex.Store({
     state: {
         characters: [],
@@ -25,46 +20,46 @@ export const store = new Vuex.Store({
 
     actions: {
         loadCharacters({commit}) {
-            axios.get(characterURL).then(result => {
+            axios.get(consts.characterURL).then(result => {
                 commit('saveCharacters', result.data.results);
             }).catch(error => {
                 throw new Error(`API ${error}`);
             });
         },
         loadFilms({commit}) {
-            axios.get(filmsURL).then(result => {
+            axios.get(consts.filmsURL).then(result => {
                 commit('saveFilms', result.data.results);
             }).catch(error => {
                 throw new Error(`API ${error}`);
             });
         },
         loadStarships({commit}) {
-            axios.get(starshipsURL).then(result => {
+            axios.get(consts.starshipsURL).then(result => {
                 commit('saveStarships', result.data.results);
             }).catch(error => {
                 throw new Error(`API ${error}`);
             });
         },
         loadPlanets({commit}) {
-            axios.get(planetsURL).then(result => {
+            axios.get(consts.planetsURL).then(result => {
                 commit('savePlanets', result.data.results);
             }).catch(error => {
                 throw new Error(`API ${error}`);
             });
         },
 
-        loadCharacter({commit}, url) {
+        loadCharacter({commit, dispatch}, url) {
             commit('loadingState', true);
 
             axios.get(url)
                 .then(response => {
                     consts.person.name = response.data.name;
-                    consts.person.homeworld = this.getResponse(response.data.homeworld).name;
+                    consts.person.homeworld = dispatch('getResponse', response.data.homeworld).name;
                     response.data.films.forEach((film) => {
-                        consts.person.films.push(this.getResponse(film).title);
+                        consts.person.films.push(dispatch('getResponse', film).title);
                     });
                     response.data.starships.forEach((ship) => {
-                        consts.person.starships.push(this.getResponse(ship).name);
+                        consts.person.starships.push(dispatch('getResponse', ship).name);
                     });
                     commit('saveCharacter', consts.person);
                 })
@@ -163,7 +158,7 @@ export const store = new Vuex.Store({
                 }).finally(() => setTimeout(function () { commit('loadingState', false); }.bind(this), 2000));
         },
 
-        getResponse(data) {
+        getResponse (data) {
             axios.get(data)
                 .then(response => {
                     return response.data;

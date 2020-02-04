@@ -1,3 +1,8 @@
+export const characterURL = 'https://swapi.co/api/people/';
+export const filmsURL = 'https://swapi.co/api/films/';
+export const starshipsURL = 'https://swapi.co/api/starships/';
+export const planetsURL = 'https://swapi.co/api/planets/';
+
 export const person = {
     name: '',
     homeworld: '',
