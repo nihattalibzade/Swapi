@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import * as consts from './consts'
 
 Vue.use(Vuex);
 
@@ -53,25 +54,19 @@ export const store = new Vuex.Store({
         },
 
         loadCharacter({commit}, url) {
-            this.person = {
-                name: '',
-                homeworld: '',
-                films: [],
-                starships: [],
-            };
             commit('loadingState', true);
 
             axios.get(url)
                 .then(response => {
-                    this.person.name = response.data.name;
-                    this.person.homeworld = this.getResponse(response.data.homeworld).name;
+                    consts.person.name = response.data.name;
+                    consts.person.homeworld = this.getResponse(response.data.homeworld).name;
                     response.data.films.forEach((film) => {
-                        this.person.films.push(this.getResponse(film).title);
+                        consts.person.films.push(this.getResponse(film).title);
                     });
                     response.data.starships.forEach((ship) => {
-                        this.person.starships.push(this.getResponse(ship).name);
+                        consts.person.starships.push(this.getResponse(ship).name);
                     });
-                    commit('saveCharacter', this.person);
+                    commit('saveCharacter', consts.person);
                 })
                 .catch(error => {
                     throw new Error(`API ${error}`);
@@ -79,38 +74,23 @@ export const store = new Vuex.Store({
         },
 
         loadPlanet({commit}, url) {
-            this.world = {
-                name: '',
-                population: '',
-                climate: '',
-                orbital_period: '',
-                terrain: '',
-                residents: [],
-                films: []
-            };
             commit('loadingState', true);
 
             axios.get(url)
                 .then(response => {
-                    this.world.name = response.data.name;
-                    this.world.population = response.data.population;
-                    this.world.climate = response.data.climate;
-                    this.world.orbital_period = response.data.orbital_period;
-                    this.world.terrain = response.data.terrain;
+                    consts.world.name = response.data.name;
+                    consts.world.population = response.data.population;
+                    consts.world.climate = response.data.climate;
+                    consts.world.orbital_period = response.data.orbital_period;
+                    consts.world.terrain = response.data.terrain;
 
                     response.data.residents.forEach((resident) => {
-                        axios.get(resident)
-                            .then(response2 => {
-                                this.world.residents.push(response2.data.name);
-                            })
+                        consts.world.residents.push(this.getResponse(resident).name);
                     });
                     response.data.films.forEach((film) => {
-                        axios.get(film)
-                            .then(response2 => {
-                                this.world.films.push(response2.data.title);
-                            })
+                        consts.world.residents.push(this.getResponse(film).title);
                     });
-                    commit('savePlanet', this.world);
+                    commit('savePlanet', consts.world);
                 })
                 .catch(error => {
                     throw new Error(`API ${error}`);
@@ -118,45 +98,35 @@ export const store = new Vuex.Store({
         },
 
         loadFilm: function ({commit}, url) {
-            this.movie = {
-                title: '',
-                director: '',
-                producer: '',
-                episode_id: '',
-                opening_crawl: '',
-                characters: [],
-                planets: [],
-                starships: []
-            };
             commit('loadingState', true);
 
             axios.get(url)
                 .then(response => {
-                    this.movie.title = response.data.title;
-                    this.movie.director = response.data.director;
-                    this.movie.producer = response.data.producer;
-                    this.movie.episode_id = response.data.episode_id;
-                    this.movie.opening_crawl = response.data.opening_crawl;
+                    consts.movie.title = response.data.title;
+                    consts.movie.director = response.data.director;
+                    consts.movie.producer = response.data.producer;
+                    consts.movie.episode_id = response.data.episode_id;
+                    consts.movie.opening_crawl = response.data.opening_crawl;
 
                     response.data.characters.forEach((resident) => {
                         axios.get(resident)
                             .then(response2 => {
-                                this.movie.characters.push(response2.data.name);
+                                consts.movie.characters.push(response2.data.name);
                             })
                     });
                     response.data.planets.forEach((planet) => {
                         axios.get(planet)
                             .then(response2 => {
-                                this.movie.planets.push(response2.data.name);
+                                consts.movie.planets.push(response2.data.name);
                             })
                     });
                     response.data.starships.forEach((starship) => {
                         axios.get(starship)
                             .then(response2 => {
-                                this.movie.starships.push(response2.data.name);
+                                consts.movie.starships.push(response2.data.name);
                             })
                     });
-                    commit('saveFilm', this.movie);
+                    commit('saveFilm', consts.movie);
                 })
                 .catch(e => {
                     this.errors.push(e)
@@ -164,45 +134,36 @@ export const store = new Vuex.Store({
         },
 
         loadStarship: function ({commit}, url) {
-            this.ship = {
-                name: '',
-                passengers: '',
-                manufacturer: '',
-                model: '',
-                crew: '',
-                films: [],
-                pilots: []
-            };
             commit('loadingState', true);
 
             axios.get(url)
                 .then(response => {
-                    this.ship.name = response.data.name;
-                    this.ship.passengers = response.data.passengers;
-                    this.ship.manufacturer = response.data.manufacturer;
-                    this.ship.model = response.data.model;
-                    this.ship.crew = response.data.crew;
+                    consts.ship.name = response.data.name;
+                    consts.ship.passengers = response.data.passengers;
+                    consts.ship.manufacturer = response.data.manufacturer;
+                    consts.ship.model = response.data.model;
+                    consts.ship.crew = response.data.crew;
 
                     response.data.films.forEach((film) => {
                         axios.get(film)
                             .then(response2 => {
-                                this.ship.films.push(response2.data.title);
+                                consts.ship.films.push(response2.data.title);
                             })
                     });
                     response.data.pilots.forEach((pilot) => {
                         axios.get(pilot)
                             .then(response2 => {
-                                this.ship.pilots.push(response2.data.name);
+                                consts.ship.pilots.push(response2.data.name);
                             })
                     });
-                    commit('saveStarship', this.ship);
+                    commit('saveStarship', consts.ship);
                 })
                 .catch(e => {
                     this.errors.push(e)
                 }).finally(() => setTimeout(function () { commit('loadingState', false); }.bind(this), 2000));
         },
 
-        getResponse: function (data) {
+        getResponse(data) {
             axios.get(data)
                 .then(response => {
                     return response.data;
