@@ -39,4 +39,6 @@ export default {
     font-size: 25px;
     font-weight: bold;
   }
+/*https://codepen.io/ovdojoey/pen/BomKyZ*/
+
 </style>

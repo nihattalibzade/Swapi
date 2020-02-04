@@ -57,6 +57,7 @@
             return {
                 filterCharacter: '',
                 showDismissibleAlert: false,
+                mutations: ['saveCharacter', 'saveFilm', 'saveStarship', 'savePlanet'],
             }
         },
 
@@ -70,34 +71,29 @@
                 let film = this.films.filter(d => d.title.toLowerCase().includes(this.filterCharacter.toLowerCase()))[0];
                 let pl = this.planets.filter(d => d.name.toLowerCase().includes(this.filterCharacter.toLowerCase()))[0];
 
-                if(ch && Object.keys(ch).length > 0) {
-                    this.$store.commit('savePlanet', undefined);
-                    this.$store.commit('saveStarship', undefined);
-                    this.$store.commit('saveFilm', undefined);
-                    this.$store.dispatch('loadCharacter', ch.url);
+                if(ch) {
+                    this.resetComponents('saveCharacter', 'loadCharacter', ch.url);
                 }
-                else if (star && Object.keys(star).length > 0){
-                    this.$store.commit('saveCharacter', undefined);
-                    this.$store.commit('savePlanet', undefined);
-                    this.$store.commit('saveFilm', undefined);
-                    this.$store.dispatch('loadStarship', star.url);
+                else if (star){
+                    this.resetComponents('saveStarship', 'loadStarship', star.url);
                 }
-                else if (pl && Object.keys(pl).length > 0){
-                    this.$store.commit('saveCharacter', undefined);
-                    this.$store.commit('saveStarship', undefined);
-                    this.$store.commit('saveFilm', undefined);
-                    this.$store.dispatch('loadPlanet', pl.url);
+                else if (pl){
+                    this.resetComponents('savePlanet', 'loadPlanet', pl.url);
                 }
-                else if (film && Object.keys(film).length > 0){
-                    this.$store.commit('savePlanet', undefined);
-                    this.$store.commit('saveCharacter', undefined);
-                    this.$store.commit('saveStarship', undefined);
-                    this.$store.dispatch('loadFilm', film.url);
+                else if (film){
+                    this.resetComponents('saveFilm', 'loadFilm', film.url);
                 }
                 else {
                     this.showDismissibleAlert = true;
                     setTimeout(function () { this.showDismissibleAlert = false }.bind(this), 5000);
                 }
+            },
+
+            resetComponents: function (mutation, action, url) {
+                this.mutations.filter(name => name !== mutation).forEach((mutation) => {
+                    this.$store.commit(mutation, undefined);
+                });
+                this.$store.dispatch(action, url);
             }
         }
     }
