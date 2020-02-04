@@ -58,6 +58,7 @@
                 filterCharacter: '',
                 showDismissibleAlert: false,
                 mutations: ['saveCharacter', 'saveFilm', 'saveStarship', 'savePlanet'],
+                filteredItem: {}
             }
         },
 
@@ -66,22 +67,18 @@
         methods: {
 
             filterData: function () {
-                let ch = this.characters.filter(d => d.name.toLowerCase().includes(this.filterCharacter.toLowerCase()))[0];
-                let star = this.starships.filter(d => d.name.toLowerCase().includes(this.filterCharacter.toLowerCase()))[0];
-                let film = this.films.filter(d => d.title.toLowerCase().includes(this.filterCharacter.toLowerCase()))[0];
-                let pl = this.planets.filter(d => d.name.toLowerCase().includes(this.filterCharacter.toLowerCase()))[0];
 
-                if(ch) {
-                    this.resetComponents('saveCharacter', 'loadCharacter', ch.url);
+                if(this.filterObjects(this.characters)) {
+                    this.resetComponents('saveCharacter', 'loadCharacter', this.filteredItem.url);
                 }
-                else if (star){
-                    this.resetComponents('saveStarship', 'loadStarship', star.url);
+                else if (this.filterObjects(this.starships)){
+                    this.resetComponents('saveStarship', 'loadStarship', this.filteredItem.url);
                 }
-                else if (pl){
-                    this.resetComponents('savePlanet', 'loadPlanet', pl.url);
+                else if (this.filterObjects(this.planets)){
+                    this.resetComponents('savePlanet', 'loadPlanet', this.filteredItem.url);
                 }
-                else if (film){
-                    this.resetComponents('saveFilm', 'loadFilm', film.url);
+                else if (this.filterObjects(this.films)){
+                    this.resetComponents('saveFilm', 'loadFilm', this.filteredItem.url);
                 }
                 else {
                     this.showDismissibleAlert = true;
@@ -94,6 +91,10 @@
                     this.$store.commit(mutation, undefined);
                 });
                 this.$store.dispatch(action, url);
+            },
+            
+            filterObjects: function (items) {
+                return this.filteredItem = items.filter(item => item.name.toLowerCase().includes(this.filterCharacter.toLowerCase()))[0];
             }
         }
     }
