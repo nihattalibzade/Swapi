@@ -2,11 +2,11 @@
     <div class="container-fluid mt-5" v-if="film !== undefined">
         <div v-if="!isLoading" class="row">
             <div class="col-md-6 col-sm-12">
-                <div class="mb-5">
+                <div class="mb-5 card_wrapper">
                     <b-card class="card_header"
                             border-variant="dark"
                             header-border-variant="dark"
-                            :header="film.title + ' (Movie)'">
+                            :header="film.name + ' (Movie)'">
                         <b-card-text class="text-left">
                             <em><b>Director</b></em>: {{film.director}} <br>
                             <em><b>Producer</b></em>: {{film.producer}} <br>
@@ -17,7 +17,7 @@
                     </b-card>
                 </div>
 
-                <div class="mb-5">
+                <div class="mb-5 card_wrapper">
                     <b-card class="card_header"
                             border-variant="dark"
                             header-border-variant="dark"
@@ -30,7 +30,7 @@
             </div>
 
             <div class="col-md-6 col-sm-12">
-                <div class="mb-5">
+                <div class="mb-5 card_wrapper">
                     <b-card class="card_header"
                             border-variant="dark"
                             header-border-variant="dark"
@@ -40,7 +40,7 @@
                         </b-card-text>
                     </b-card>
                 </div>
-                <div class="mb-5">
+                <div class="mb-5 card_wrapper">
                     <b-card class="card_header"
                             border-variant="dark"
                             header-border-variant="dark"

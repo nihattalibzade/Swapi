@@ -1,8 +1,8 @@
 <template>
-    <div class="container-fluid mt-5" v-if="starship !== undefined">
+    <div class="container-fluid mt-5 wrapper" v-if="starship !== undefined">
         <div v-if="!isLoading" class="row">
             <div class="col-md-6 col-sm-12">
-                <div class="mb-5">
+                <div class="mb-5 card_wrapper">
                     <b-card class="card_header"
                             border-variant="dark"
                             header-border-variant="dark"
@@ -19,7 +19,7 @@
             </div>
 
             <div class="col-md-6 col-sm-12">
-                <div class="mb-5">
+                <div class="mb-5 card_wrapper">
                     <b-card class="card_header"
                             border-variant="dark"
                             header-border-variant="dark"
@@ -29,7 +29,7 @@
                         </b-card-text>
                     </b-card>
                 </div>
-                <div class="mb-5">
+                <div class="mb-5 card_wrapper">
                     <b-card class="card_header"
                             border-variant="dark"
                             header-border-variant="dark"

@@ -15,9 +15,18 @@
                 <div class="col-md-6">
                     <div class="col-sm-12">
                         <b-input-group class="my-3">
-                            <b-form-input v-model="filterCharacter" @keyup.enter="filterData" class="mr-sm-2" type="text" placeholder="Search"/>
+                            <b-form-input
+                                    v-model="filterCharacter"
+                                    v-on:keyup.enter="filterData"
+                                    class="mr-sm-2"
+                                    type="text"
+                                    placeholder="Please type character, starship, film or planet name..."/>
                             <b-input-group-append>
-                                <b-button :disabled="filterCharacter === ''" v-on:click="filterData" variant="dark">Search</b-button>
+                                <b-button
+                                        :disabled="filterCharacter === ''"
+                                        v-on:click="filterData"
+                                        variant="primary">Search
+                                </b-button>
                             </b-input-group-append>
                         </b-input-group>
                     </div>
@@ -66,9 +75,12 @@
 
         methods: {
 
-            filterData: function () {
+            filterData: function (e) {
 
-                if(this.filterObjects(this.characters)) {
+                if(!this.filterCharacter.replace(/\s/g, '').length) {
+                    e.preventDefault();
+                }
+                else if(this.filterObjects(this.characters)) {
                     this.resetComponents('saveCharacter', 'loadCharacter', this.filteredItem.url);
                 }
                 else if (this.filterObjects(this.starships)){
@@ -82,7 +94,7 @@
                 }
                 else {
                     this.showDismissibleAlert = true;
-                    setTimeout(function () { this.showDismissibleAlert = false }.bind(this), 5000);
+                    setTimeout(function () { this.showDismissibleAlert = false }.bind(this), 3000);
                 }
             },
 
@@ -94,8 +106,15 @@
             },
             
             filterObjects: function (items) {
-                return this.filteredItem = items.filter(item => item.name.toLowerCase().includes(this.filterCharacter.toLowerCase()))[0];
-            }
+                return this.filteredItem = items.filter(item => {
+                    if (typeof item.title !== 'undefined') {
+                        return item.title.toLowerCase().includes(this.filterCharacter.toLowerCase())
+                    }
+                    else {
+                        return item.name.toLowerCase().includes(this.filterCharacter.toLowerCase())
+                    }
+                })[0];
+            },
         }
     }
 </script>

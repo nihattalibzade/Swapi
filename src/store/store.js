@@ -15,7 +15,7 @@ export const store = new Vuex.Store({
         planet: undefined,
         starship: undefined,
         film: undefined,
-        isLoading: Boolean
+        isLoading: true
     },
 
     actions: {
@@ -48,18 +48,27 @@ export const store = new Vuex.Store({
             });
         },
 
-        loadCharacter({commit, dispatch}, url) {
+        loadCharacter: function({commit}, url) {
             commit('loadingState', true);
 
             axios.get(url)
                 .then(response => {
                     consts.person.name = response.data.name;
-                    consts.person.homeworld = dispatch('getResponse', response.data.homeworld).name;
+                    axios.get(response.data.homeworld)
+                        .then(response2 => {
+                            consts.person.homeworld = response2.data.name;
+                        });
                     response.data.films.forEach((film) => {
-                        consts.person.films.push(dispatch('getResponse', film).title);
+                        axios.get(film)
+                            .then(response2 => {
+                                consts.person.films.push(response2.data.title);
+                            })
                     });
                     response.data.starships.forEach((ship) => {
-                        consts.person.starships.push(dispatch('getResponse', ship).name);
+                        axios.get(ship)
+                            .then(response2 => {
+                                consts.person.starships.push(response2.data.name);
+                            })
                     });
                     commit('saveCharacter', consts.person);
                 })
@@ -68,7 +77,7 @@ export const store = new Vuex.Store({
                 }).finally(() => setTimeout(function () { commit('loadingState', false); }.bind(this), 2000));
         },
 
-        loadPlanet({commit}, url) {
+        loadPlanet: function({commit}, url) {
             commit('loadingState', true);
 
             axios.get(url)
@@ -80,10 +89,16 @@ export const store = new Vuex.Store({
                     consts.world.terrain = response.data.terrain;
 
                     response.data.residents.forEach((resident) => {
-                        consts.world.residents.push(this.getResponse(resident).name);
+                        axios.get(resident)
+                            .then(response2 => {
+                                consts.world.residents.push(response2.data.name);
+                            })
                     });
                     response.data.films.forEach((film) => {
-                        consts.world.residents.push(this.getResponse(film).title);
+                        axios.get(film)
+                            .then(response2 => {
+                                consts.world.films.push(response2.data.title);
+                            })
                     });
                     commit('savePlanet', consts.world);
                 })
@@ -97,7 +112,7 @@ export const store = new Vuex.Store({
 
             axios.get(url)
                 .then(response => {
-                    consts.movie.title = response.data.title;
+                    consts.movie.name = response.data.title;
                     consts.movie.director = response.data.director;
                     consts.movie.producer = response.data.producer;
                     consts.movie.episode_id = response.data.episode_id;
@@ -158,7 +173,7 @@ export const store = new Vuex.Store({
                 }).finally(() => setTimeout(function () { commit('loadingState', false); }.bind(this), 2000));
         },
 
-        getResponse (data) {
+        async getResponse ({commit}, data) {
             axios.get(data)
                 .then(response => {
                     return response.data;

@@ -21,7 +21,7 @@ export const world = {
 };
 
 export const movie = {
-    title: '',
+    name: '',
     director: '',
     producer: '',
     episode_id: '',
