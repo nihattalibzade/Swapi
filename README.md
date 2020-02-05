@@ -20,7 +20,8 @@ npm run serve
 
 ## About the Project
 
- - This is a small SPA created with **VueJS**
+ - This is a small SPA created with **Vue CLI**
+ - The project has been implemented with **VueJS**
  - It fetches all the data displayed on front end from [Swapi - Star Wars API](https://swapi.co/documentation)
  - Dynamic list includes characters, movies, planets and starships and corresponding information about the features of each
  - Swapi API response has pagination to limit the data, therefore all data is based on first 10 item (10 films, 10 planets...). Avoided unnecessary load of data
