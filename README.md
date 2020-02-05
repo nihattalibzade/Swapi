@@ -10,6 +10,7 @@ npm install
 npm run serve
 ```
 
+### Preview of the project
 
 
 ### Customize configuration
